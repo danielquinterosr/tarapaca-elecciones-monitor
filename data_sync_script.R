@@ -70,8 +70,8 @@ votos_wide_df <- tryCatch({
 })
 
 # Captura el Timestamp de la modificación de la Hoja (Trazabilidad)
-sheet_meta <- gs4_get(SHEET_ID)
-last_modified_gs <- as.character(sheet_meta$drive_resource$modifiedTime)
+#sheet_meta <- gs4_get(SHEET_ID)
+#last_modified_gs <- as.character(sheet_meta$drive_resource$modifiedTime)
 
 # Renombrar las primeras dos columnas (mesa_id y ultima_modificacion del Excel)
 votos_wide_df <- votos_wide_df |>
@@ -93,8 +93,8 @@ votos_long_df <- votos_wide_df |>
   mutate(
     mesa_id   = as.character(mesa_id),
     votos     = replace_na(votos, 0L), 
-    # Usamos el timestamp de la columna como la hora de digitación de la mesa
-    timestamp = coalesce(as.character(timestamp_digitador), last_modified_gs), 
+    # Corregido: Si timestamp_digitador es NA, lo reemplazamos con la hora de SYNC, no con un metadato que falló.
+    timestamp = coalesce(as.character(timestamp_digitador), as.character(Sys.time())), 
     sync_time = as.character(Sys.time()) # Tiempo de procesamiento en la nube
   ) %>%
   # Limpiamos y dejamos el formato final que espera la app (excepto cand_id que ahora es nombre)
