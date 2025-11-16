@@ -77,7 +77,7 @@ votos_wide_df <- tryCatch({
 votos_wide_df <- votos_wide_df |>
     rename(
         mesa_id = 1,     
-        timestamp_digitador = 2    
+        ultima_modificacion = 2    
     ) |>
     filter(!is.na(mesa_id) & mesa_id != "") # Limpia filas vacías al final
 
@@ -85,7 +85,7 @@ cat("Transformando de Ancho a Largo (Pivot)...")
 votos_long_df <- votos_wide_df |>
   # Usa la lógica de pivot_longer: rota todas las columnas que NO sean mesa_id y timestamp_digitador
   pivot_longer(
-    cols = -c(mesa_id, timestamp_digitador), 
+    cols = -c(mesa_id, ultima_modificacion), 
     names_to = "cand_id", # cand_id ahora contiene el nombre completo del candidato (lo que necesita tu app Shiny)
     values_to = "votos",
     values_transform = list(votos = as.integer)
