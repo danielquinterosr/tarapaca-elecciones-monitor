@@ -57,8 +57,10 @@ upload_to_gist <- function(content, filename, gist_id, token) {
 # 3. LECTURA, TRANSFORMACIÓN (WIDE -> LONG) Y TRAZABILIDAD
 # =========================================================================
 
-cat("Iniciando autenticación de Google Sheets...\n")
-gs4_auth(scopes = "https://www.googleapis.com/auth/spreadsheets.readonly") 
+cat("Iniciando autenticación de Google Sheets (gs4_deauth())...\n")
+# Usa gs4_deauth() para forzar el modo de lectura pública/no interactiva.
+# Esto funciona si la hoja está configurada como "Cualquier usuario con el enlace" puede "Ver".
+googlesheets4::gs4_deauth() 
 
 cat("Leyendo datos de Google Sheets (Ancho)...")
 votos_wide_df <- tryCatch({
