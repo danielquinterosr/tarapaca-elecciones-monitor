@@ -94,7 +94,7 @@ votos_long_df <- votos_wide_df |>
     mesa_id   = as.character(mesa_id),
     votos     = replace_na(votos, 0L), 
     # Corregido: Si timestamp_digitador es NA, lo reemplazamos con la hora de SYNC, no con un metadato que falló.
-    timestamp = coalesce(as.character(timestamp_digitador), as.character(Sys.time())), 
+    timestamp = as.character(ultima_modificacion), 
     sync_time = as.character(Sys.time()) # Tiempo de procesamiento en la nube
   ) %>%
   # Limpiamos y dejamos el formato final que espera la app (excepto cand_id que ahora es nombre)
